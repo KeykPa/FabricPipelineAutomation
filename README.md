@@ -2,11 +2,25 @@
 
 Automated conference attendance data pipeline using Microsoft Fabric, Azure Blob Storage, and Power BI.
 
+## 🔐 **Security-First: Entra ID Authentication**
+
+**All authentication uses Entra ID (Azure AD) - no keys, no secrets, no credentials in code.**
+
+- ✅ Azure Storage: RBAC with Entra ID
+- ✅ Fabric Workspace: SSO with organizational account
+- ✅ Notebooks: `mssparkutils` with user credentials
+- ✅ Power BI: OAuth with Entra ID
+
+📖 **Read First**: [Entra ID Authentication Guide](docs/ENTRA_AUTH_GUIDE.md)
+
+---
+
 ## 🎯 Overview
 
-This project provides a complete GitOps-driven solution for loading, transforming, and visualizing conference attendance data using Microsoft Fabric.
+This project provides a complete **GitOps-driven** solution for loading, transforming, and visualizing conference attendance data using Microsoft Fabric.
 
 **Key Features:**
+- 🔐 **Entra ID Authentication**: Enterprise-grade security throughout
 - 📊 **Data Sources**: CSV and JSON from Azure Blob Storage
 - 🏗️ **Infrastructure as Code**: Automated Azure resource deployment
 - 📓 **PySpark Notebooks**: Data transformation pipeline
@@ -69,6 +83,38 @@ FabricPipelineAutomation/
 - **Azure CLI** (`az login` completed)
 - **Microsoft Fabric** workspace
 - **GitHub** account
+- **🔐 Entra ID Authentication**: Required RBAC roles (see below)
+
+### ⚠️ **IMPORTANT: Setup Entra ID Authentication First**
+
+Before running notebooks, users need **Storage Blob Data Reader** role:
+
+#### **Option 1: Azure Portal (Recommended)**
+1. Open [Azure Portal](https://portal.azure.com)
+2. Navigate to: Resource Groups → `westusattendiesdata` → `westusattendiesstore`
+3. Click: **Access Control (IAM)**
+4. Click: **+ Add** → **Add role assignment**
+5. Select role: **Storage Blob Data Reader**
+6. Select: Your user or group
+7. Click: **Review + assign**
+8. **Wait 5 minutes** for RBAC propagation
+
+#### **Option 2: Automated Script**
+```bash
+python scripts/setup_entra_auth.py
+```
+
+#### **Option 3: Azure CLI**
+```bash
+az role assignment create \
+  --assignee user@domain.com \
+  --role "Storage Blob Data Reader" \
+  --scope $(az storage account show --name westusattendiesstore --resource-group westusattendiesdata --query id -o tsv)
+```
+
+📖 **Details**: [Entra ID Authentication Guide](docs/ENTRA_AUTH_GUIDE.md)
+
+---
 
 ### 1. Clone Repository
 
