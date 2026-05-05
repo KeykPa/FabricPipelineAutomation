@@ -53,11 +53,11 @@ def main():
     print(f"{Fore.CYAN}Setup Entra ID Authentication for Fabric")
     print(f"{Fore.CYAN}{'='*80}{Style.RESET_ALL}\n")
     
-    print(f"{Fore.WHITE}This script will:{Style.RESET_ALL}")
-    print(f"  1. Get current user identity")
-    print(f"  2. Assign 'Storage Blob Data Reader' role")
-    print(f"  3. Verify permissions")
-    print(f"  4. All authentication via Entra ID (no keys!)\n")
+    print(f"{Fore.WHITE}This script assigns Storage Blob Data Reader to the admin account that:{Style.RESET_ALL}")
+    print(f"  1. Provisions Azure resources and Fabric workspaces")
+    print(f"  2. Runs notebooks (via mssparkutils with user credentials)")
+    print(f"  3. All authentication via Entra ID (no keys!)")
+    print(f"\n{Fore.YELLOW}For production: Use workspace managed identity (see ENTRA_AUTH_GUIDE.md){Style.RESET_ALL}\n")
     
     # Step 1: Get storage account resource ID
     storage_id = run_command(

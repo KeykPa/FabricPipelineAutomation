@@ -29,7 +29,17 @@ User → Entra ID Login → Fabric Workspace
 
 ## 📋 **Required Action: RBAC Setup**
 
-**You must assign the Storage Blob Data Reader role** to users who will run notebooks.
+**Assign Storage Blob Data Reader role to the admin account** that:
+- Provisions Fabric workspaces
+- Runs notebooks (via `mssparkutils`)
+
+### **For This Sample**: Admin Account
+The admin account (`admin@MngEnvMCAP882106.onmicrosoft.com`) is used for both provisioning and notebook execution.
+
+### **For Production**: Managed Identity
+Use Fabric workspace identity or user-assigned managed identity (see [ENTRA_AUTH_GUIDE.md](docs/ENTRA_AUTH_GUIDE.md)).
+
+---
 
 ### **Azure Portal Method** (Recommended):
 
@@ -40,6 +50,7 @@ User → Entra ID Login → Fabric Workspace
 5. **Select Role**: `Storage Blob Data Reader`
 6. **Click**: Next
 7. **Select User**: `admin@MngEnvMCAP882106.onmicrosoft.com`
+   - ℹ️ This is the admin account that provisions workspaces AND runs notebooks
 8. **Click**: Review + assign
 9. **Wait**: 5 minutes for RBAC propagation
 

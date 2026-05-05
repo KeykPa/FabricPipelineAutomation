@@ -8,6 +8,25 @@ This project uses **Entra ID (formerly Azure AD) authentication** throughout to 
 
 ## ✅ **Authentication Architecture**
 
+### **🎯 Identity Types**
+
+#### **For Sample/Development** (This Project):
+- **Identity**: Admin account (`admin@MngEnvMCAP882106.onmicrosoft.com`)
+- **Purpose**: 
+  - Provisions Azure resources and Fabric workspaces
+  - Runs notebooks via `mssparkutils` (uses signed-in user credentials)
+- **RBAC Required**: `Storage Blob Data Reader` on storage account
+- **Benefits**: Simple, single identity for all operations
+
+#### **For Production** (Recommended):
+- **Identity**: Fabric Workspace Managed Identity or User-Assigned Managed Identity
+- **Purpose**: Dedicated identity for workspace operations
+- **RBAC Required**: Same roles, assigned to managed identity
+- **Benefits**: Separation of duties, no human credentials in automation
+- **Setup**: See "Production Managed Identity Setup" section below
+
+---
+
 ### **1. Azure Resources**
 - **Azure CLI**: Uses your organizational account
 - **Azure Storage**: Entra ID with RBAC (no storage keys in code)
@@ -28,9 +47,13 @@ This project uses **Entra ID (formerly Azure AD) authentication** throughout to 
 
 ## 📋 **Required RBAC Roles**
 
-### **Storage Account Permissions**
+### **For This Sample: Admin Account**
 
-Every user who will run the Fabric notebook needs:
+The admin account (`admin@MngEnvMCAP882106.onmicrosoft.com`) needs **Storage Blob Data Reader** because it:
+1. **Provisions** Fabric workspaces and resources
+2. **Runs** notebooks (via `mssparkutils` with user credentials)
+
+### **Storage Account Permissions**
 
 ```bash
 # Required role on storage account
@@ -44,8 +67,10 @@ Every user who will run the Fabric notebook needs:
 3. **Access Control (IAM)** → **Add role assignment**
 4. **Role**: `Storage Blob Data Reader`
 5. **Assign access to**: User, group, or service principal
-6. **Select**: Your user or group
+6. **Select**: `admin@MngEnvMCAP882106.onmicrosoft.com`
+   - ℹ️ **Note**: This is the admin account for both provisioning AND notebook execution
 7. **Review + assign**
+8. **Wait 5 minutes** for RBAC propagation
 
 ### **Assign Via Azure CLI**:
 
@@ -123,6 +148,81 @@ python scripts/deploy_workspaces.py
 ```bash
 az login --tenant <your-tenant-id>
 ```
+
+---
+
+## 🏢 **Production Managed Identity Setup**
+
+For production workloads, use managed identities instead of user accounts.
+
+### **Option 1: Workspace Identity** (Recommended for Fabric)
+
+#### **Enable Workspace Identity**:
+1. Open workspace in Fabric portal
+2. **Workspace settings** → **Azure connections**
+3. Enable **Workspace identity**
+4. Copy the identity's **Object ID**
+
+#### **Assign RBAC to Workspace Identity**:
+```bash
+# Get workspace identity object ID from portal
+WORKSPACE_IDENTITY_ID="<object-id-from-portal>"
+
+# Assign Storage Blob Data Reader
+az role assignment create \
+  --assignee-object-id $WORKSPACE_IDENTITY_ID \
+  --assignee-principal-type ServicePrincipal \
+  --role "Storage Blob Data Reader" \
+  --scope "/subscriptions/<subscription-id>/resourceGroups/westusattendiesdata/providers/Microsoft.Storage/storageAccounts/westusattendiesstore"
+```
+
+#### **Update Notebook Code**:
+```python
+# No changes needed! mssparkutils automatically uses workspace identity
+# when configured and user has insufficient permissions
+from notebookutils import mssparkutils
+
+storage_path = f"abfss://{container}@{storage_account}.dfs.core.windows.net/{file}"
+df = spark.read.format("csv").option("header", "true").load(storage_path)
+```
+
+### **Option 2: User-Assigned Managed Identity**
+
+#### **Create Managed Identity**:
+```bash
+az identity create \
+  --name fabricPipelineIdentity \
+  --resource-group westusattendiesdata
+```
+
+#### **Assign Storage Access**:
+```bash
+# Get identity principal ID
+IDENTITY_ID=$(az identity show \
+  --name fabricPipelineIdentity \
+  --resource-group westusattendiesdata \
+  --query principalId -o tsv)
+
+# Assign role
+az role assignment create \
+  --assignee $IDENTITY_ID \
+  --role "Storage Blob Data Reader" \
+  --scope $(az storage account show --name westusattendiesstore --resource-group westusattendiesdata --query id -o tsv)
+```
+
+#### **Attach to Workspace**:
+Currently, user-assigned managed identities must be configured via workspace settings in the Fabric portal.
+
+### **Benefits of Managed Identity**:
+- ✅ No credential management
+- ✅ Automatic token rotation
+- ✅ Separation of duties (workspace identity ≠ admin identity)
+- ✅ Audit trail for workspace operations
+- ✅ Works with automation and CI/CD
+
+---
+
+## 🔧 **Troubleshooting**
 
 ### **Fabric API 401 Unauthorized**
 

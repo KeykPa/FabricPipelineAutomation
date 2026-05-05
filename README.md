@@ -87,7 +87,14 @@ FabricPipelineAutomation/
 
 ### ⚠️ **IMPORTANT: Setup Entra ID Authentication First**
 
-Before running notebooks, users need **Storage Blob Data Reader** role:
+**Assign Storage Blob Data Reader to the admin account** that:
+- Provisions Azure resources and Fabric workspaces
+- Runs notebooks (via `mssparkutils` with user credentials)
+
+**For this sample**: The admin account handles both provisioning and notebook execution.  
+**For production**: Use workspace managed identity (see [Entra Auth Guide](docs/ENTRA_AUTH_GUIDE.md)).
+
+---
 
 #### **Option 1: Azure Portal (Recommended)**
 1. Open [Azure Portal](https://portal.azure.com)
@@ -95,7 +102,8 @@ Before running notebooks, users need **Storage Blob Data Reader** role:
 3. Click: **Access Control (IAM)**
 4. Click: **+ Add** → **Add role assignment**
 5. Select role: **Storage Blob Data Reader**
-6. Select: Your user or group
+6. Select: **Admin account** (e.g., `admin@MngEnvMCAP882106.onmicrosoft.com`)
+   - ℹ️ This account provisions workspaces AND runs notebooks
 7. Click: **Review + assign**
 8. **Wait 5 minutes** for RBAC propagation
 
