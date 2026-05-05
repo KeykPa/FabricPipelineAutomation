@@ -1,0 +1,19 @@
+# Azure SDK packages
+azure-identity>=1.15.0
+azure-storage-blob>=12.19.0
+azure-mgmt-storage>=21.1.0
+azure-mgmt-resource>=23.0.0
+azure-mgmt-fabric>=1.0.0
+
+# HTTP and API clients
+requests>=2.31.0
+msal>=1.26.0
+
+# CLI and utilities
+click>=8.1.7
+python-dotenv>=1.0.0
+colorama>=0.4.6
+tabulate>=0.9.0
+
+# Data handling
+pydantic>=2.5.0

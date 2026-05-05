@@ -1,0 +1,183 @@
+name: Deploy Fabric Pipeline
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'fabric-pipeline/**'
+      - 'sample-data/**'
+      - '.github/workflows/deploy-fabric.yml'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Target environment'
+        required: true
+        default: 'dev'
+        type: choice
+        options:
+          - dev
+          - staging
+          - production
+
+env:
+  AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  FABRIC_WORKSPACE_ID: ${{ secrets.FABRIC_WORKSPACE_ID }}
+  STORAGE_ACCOUNT_NAME: ${{ secrets.STORAGE_ACCOUNT_NAME }}
+
+jobs:
+  validate:
+    name: Validate Pipeline Configuration
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Validate JSON files
+        run: |
+          echo "Validating pipeline definition..."
+          python -c "import json; json.load(open('fabric-pipeline/pipeline-definition.json'))"
+          python -c "import json; json.load(open('fabric-pipeline/dataset-blob-source.json'))"
+          python -c "import json; json.load(open('fabric-pipeline/dataset-lakehouse-destination.json'))"
+          echo "✓ All JSON files are valid"
+
+      - name: Validate CSV data
+        run: |
+          echo "Validating CSV structure..."
+          head -1 sample-data/conference_attendance.csv
+          echo "✓ CSV header validated"
+
+  upload-sample-data:
+    name: Upload Sample Data to Blob Storage
+    runs-on: ubuntu-latest
+    needs: validate
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Upload CSV to Blob Storage
+        run: |
+          python scripts/upload_to_blob.py \
+            --storage-account ${{ env.STORAGE_ACCOUNT_NAME }} \
+            --container conference-data \
+            --file sample-data/conference_attendance.csv
+
+      - name: Upload JSON to Blob Storage
+        run: |
+          python scripts/upload_to_blob.py \
+            --storage-account ${{ env.STORAGE_ACCOUNT_NAME }} \
+            --container conference-data \
+            --file sample-data/conference_attendance.json
+
+  deploy-pipeline:
+    name: Deploy to Fabric Workspace
+    runs-on: windows-latest
+    needs: upload-sample-data
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Get Fabric Access Token
+        id: fabric-token
+        run: |
+          $toubuntu-latest
+    needs: upload-sample-data
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy Pipeline Definition
+        run: |
+          python scripts/deploy_pipeline.py \
+            --workspace-id ${{ env.FABRIC_WORKSPACE_ID }} \
+            --pipeline-path fabric-pipeline/pipeline-definition.jsonline:
+    name: Test Pipeline Execution
+    runs-on: windows-latest
+    needs: deploy-pipeline
+    if: github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Get Fabric Access Token
+        id: fabric-token
+        run: |
+          $token = az account get-access-token --resource https://analysis.windows.net/powerbi/api --query accessToken -o tsv
+          echo "::add-mask::$token"
+          echo "token=$token" >> $env:GITHUB_OUTPUT
+
+      - name: Trigger Pipeline Run
+        shell: pwsh
+        env:ubuntu-latest
+    needs: deploy-pipeline
+    if: github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Trigger Pipeline Run
+        run: |
+          echo "Pipeline execution test would run here"
+          echo

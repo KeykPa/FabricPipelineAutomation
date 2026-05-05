@@ -1,0 +1,19 @@
+# Azure and Fabric Configuration
+# Generated: 2026-05-04 17:01:17
+
+# Azure Resources
+RESOURCE_GROUP=westusattendiesdata
+LOCATION=westus
+STORAGE_ACCOUNT=westusattendiesstore
+CONTAINER=conference-data
+BLOB_ENDPOINT=https://westusattendiesstore.blob.core.windows.net/
+SUBSCRIPTION_ID=0a61e26f-1eff-4a40-94f6-4cbc6718def4
+
+# Fabric Resources
+WORKSPACE_NAME=West US Training
+WORKSPACE_ID=00bcfcd2-97d8-48b0-8ae4-67e7395ac373
+CAPACITY_NAME=akhfabcapacity
+CAPACITY_SKU=F2
+
+# Get connection string with:
+# az storage account show-connection-string --name westusattendiesstore --resource-group westusattendiesdata

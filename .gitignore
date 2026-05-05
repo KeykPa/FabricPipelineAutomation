@@ -1,0 +1,74 @@
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Azure credentials
+*.publishsettings
+*.azureProfile
+
+# Logs
+logs/
+*.log
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# IDE
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Build outputs
+dist/
+build/
+out/
+
+# Dependencies
+node_modules/
+.pnp/
+.pnp.js
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+ENV/
+env/
+
+# Test coverage
+coverage/
+*.coverage
+.nyc_output
+
+# Secrets and sensitive data
+secrets/
+*.key
+*.pem
+*.pfx
+*.p12
+
+# Local configuration overrides
+config/local.json
+config/*.local.json
+
+# Backup files
+*.bak
+*.backup
+*.old

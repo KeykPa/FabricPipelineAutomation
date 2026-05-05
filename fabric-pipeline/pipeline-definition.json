@@ -1,0 +1,265 @@
+{
+  "displayName": "ConferenceAttendanceDataPipeline",
+  "description": "Pipeline to load conference attendance data from Azure Blob Storage to Fabric Lakehouse",
+  "properties": {
+    "activities": [
+      {
+        "name": "CopyBlobToLakehouse",
+        "type": "Copy",
+        "dependsOn": [],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 3,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "source": {
+            "type": "DelimitedTextSource",
+            "storeSettings": {
+              "type": "AzureBlobStorageReadSettings",
+              "recursive": false,
+              "enablePartitionDiscovery": false
+            },
+            "formatSettings": {
+              "type": "DelimitedTextReadSettings",
+              "skipLineCount": 0,
+              "additionalProperties": {}
+            }
+          },
+          "sink": {
+            "type": "LakehouseTableSink",
+            "tableActionOption": "OverwriteSchema",
+            "partitionOption": "None"
+          },
+          "enableStaging": false,
+          "validateDataConsistency": false,
+          "translator": {
+            "type": "TabularTranslator",
+            "mappings": [
+              {
+                "source": {
+                  "name": "RegistrationID",
+                  "type": "String"
+                },
+                "sink": {
+                  "name": "RegistrationID",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "name": "FirstName",
+                  "type": "String"
+                },
+                "sink": {
+                  "name": "FirstName",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "name": "LastName",
+                  "type": "String"
+                },
+                "sink": {
+                  "name": "LastName",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "name": "Email",
+                  "type": "String"
+                },
+                "sink": {
+                  "name": "Email",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "name": "Company",
+                  "type": "String"
+                },
+                "sink": {
+                  "name": "Company",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "name": "JobTitle",
+                  "type": "String"
+                },
+                "sink": {
+                  "name": "JobTitle",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "name": "RegistrationDate",
+                  "type": "String"
+                },
+                "sink": {
+                  "name": "RegistrationDate",
+                  "type": "Date"
+                }
+              },
+              {
+                "source": {
+                  "name": "SessionName",
+                  "type": "String"
+                },
+                "sink": {
+                  "name": "SessionName",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "name": "SessionDate",
+                  "type": "String"
+                },
+                "sink": {
+                  "name": "SessionDate",
+                  "type": "Date"
+                }
+              },
+              {
+                "source": {
+                  "name": "SessionTime",
+                  "type": "String"
+                },
+                "sink": {
+                  "name": "SessionTime",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "name": "AttendanceStatus",
+                  "type": "String"
+                },
+                "sink": {
+                  "name": "AttendanceStatus",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "name": "CheckInTime",
+                  "type": "String"
+                },
+                "sink": {
+                  "name": "CheckInTime",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "name": "CheckOutTime",
+                  "type": "String"
+                },
+                "sink": {
+                  "name": "CheckOutTime",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "name": "SessionRating",
+                  "type": "String"
+                },
+                "sink": {
+                  "name": "SessionRating",
+                  "type": "Int32"
+                }
+              },
+              {
+                "source": {
+                  "name": "FeedbackComments",
+                  "type": "String"
+                },
+                "sink": {
+                  "name": "FeedbackComments",
+                  "type": "String"
+                }
+              }
+            ],
+            "typeConversion": true,
+            "typeConversionSettings": {
+              "allowDataTruncation": true,
+              "treatBooleanAsNumber": false
+            }
+          }
+        },
+        "inputs": [
+          {
+            "referenceName": "BlobStorageSource",
+            "type": "DatasetReference"
+          }
+        ],
+        "outputs": [
+          {
+            "referenceName": "LakehouseDestination",
+            "type": "DatasetReference"
+          }
+        ]
+      },
+      {
+        "name": "ValidateDataLoad",
+        "type": "Script",
+        "dependsOn": [
+          {
+            "activity": "CopyBlobToLakehouse",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.01:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30
+        },
+        "typeProperties": {
+          "scripts": [
+            {
+              "type": "Query",
+              "text": "SELECT COUNT(*) as RecordCount FROM conference_attendance"
+            }
+          ],
+          "logSettings": {
+            "logDestination": "ActivityOutput"
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "SourceFileName": {
+        "type": "String",
+        "defaultValue": "conference_attendance.csv"
+      },
+      "TargetTableName": {
+        "type": "String",
+        "defaultValue": "conference_attendance"
+      }
+    },
+    "variables": {
+      "ProcessingDate": {
+        "type": "String"
+      }
+    },
+    "folder": {
+      "name": "ConferenceData"
+    },
+    "annotations": [
+      "Conference Attendance",
+      "Data Ingestion"
+    ]
+  }
+}

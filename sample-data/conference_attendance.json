@@ -1,0 +1,125 @@
+{
+  "attendanceRecords": [
+    {
+      "registrationID": "REG001",
+      "attendee": {
+        "firstName": "Sarah",
+        "lastName": "Johnson",
+        "email": "sarah.johnson@techcorp.com",
+        "company": "TechCorp",
+        "jobTitle": "Data Engineer"
+      },
+      "registration": {
+        "date": "2026-04-01",
+        "sessionName": "Azure Fabric Deep Dive",
+        "sessionDate": "2026-05-15",
+        "sessionTime": "09:00"
+      },
+      "attendance": {
+        "status": "Registered",
+        "checkInTime": null,
+        "checkOutTime": null,
+        "sessionRating": null,
+        "feedbackComments": null
+      }
+    },
+    {
+      "registrationID": "REG002",
+      "attendee": {
+        "firstName": "Michael",
+        "lastName": "Chen",
+        "email": "michael.chen@datasoft.com",
+        "company": "DataSoft",
+        "jobTitle": "Senior Analyst"
+      },
+      "registration": {
+        "date": "2026-04-02",
+        "sessionName": "Azure Fabric Deep Dive",
+        "sessionDate": "2026-05-15",
+        "sessionTime": "09:00"
+      },
+      "attendance": {
+        "status": "Attended",
+        "checkInTime": "09:05",
+        "checkOutTime": "10:45",
+        "sessionRating": 5,
+        "feedbackComments": "Excellent session with great hands-on examples"
+      }
+    },
+    {
+      "registrationID": "REG003",
+      "attendee": {
+        "firstName": "Emily",
+        "lastName": "Rodriguez",
+        "email": "emily.r@innovate.io",
+        "company": "Innovate Inc",
+        "jobTitle": "Solution Architect"
+      },
+      "registration": {
+        "date": "2026-04-01",
+        "sessionName": "Real-time Analytics Workshop",
+        "sessionDate": "2026-05-15",
+        "sessionTime": "11:00"
+      },
+      "attendance": {
+        "status": "Attended",
+        "checkInTime": "11:02",
+        "checkOutTime": "12:30",
+        "sessionRating": 4,
+        "feedbackComments": "Very informative"
+      }
+    },
+    {
+      "registrationID": "REG004",
+      "attendee": {
+        "firstName": "James",
+        "lastName": "Williams",
+        "email": "j.williams@enterprise.com",
+        "company": "Enterprise Solutions",
+        "jobTitle": "CTO"
+      },
+      "registration": {
+        "date": "2026-04-03",
+        "sessionName": "Azure Fabric Deep Dive",
+        "sessionDate": "2026-05-15",
+        "sessionTime": "09:00"
+      },
+      "attendance": {
+        "status": "No-show",
+        "checkInTime": null,
+        "checkOutTime": null,
+        "sessionRating": 1,
+        "feedbackComments": null
+      }
+    },
+    {
+      "registrationID": "REG005",
+      "attendee": {
+        "firstName": "Lisa",
+        "lastName": "Anderson",
+        "email": "lisa.anderson@cloudnow.com",
+        "company": "CloudNow",
+        "jobTitle": "DevOps Lead"
+      },
+      "registration": {
+        "date": "2026-04-02",
+        "sessionName": "Real-time Analytics Workshop",
+        "sessionDate": "2026-05-15",
+        "sessionTime": "11:00"
+      },
+      "attendance": {
+        "status": "Attended",
+        "checkInTime": "11:00",
+        "checkOutTime": "12:28",
+        "sessionRating": 5,
+        "feedbackComments": "Amazing workshop!"
+      }
+    }
+  ],
+  "metadata": {
+    "datasetVersion": "1.0",
+    "generatedDate": "2026-05-04",
+    "totalRecords": 5,
+    "description": "Conference attendance registration sample data"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "name": "BlobStorageSource",
+  "properties": {
+    "linkedServiceName": {
+      "referenceName": "AzureBlobStorageLinkedService",
+      "type": "LinkedServiceReference"
+    },
+    "parameters": {
+      "FileName": {
+        "type": "String"
+      }
+    },
+    "folder": {
+      "name": "Sources"
+    },
+    "annotations": [],
+    "type": "DelimitedText",
+    "typeProperties": {
+      "location": {
+        "type": "AzureBlobStorageLocation",
+        "fileName": {
+          "value": "@dataset().FileName",
+          "type": "Expression"
+        },
+        "container": "conference-data"
+      },
+      "columnDelimiter": ",",
+      "escapeChar": "\\",
+      "firstRowAsHeader": true,
+      "quoteChar": "\""
+    },
+    "schema": []
+  }
+}

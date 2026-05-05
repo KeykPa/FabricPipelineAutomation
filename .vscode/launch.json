@@ -1,0 +1,53 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Python: Interactive Setup",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/interactive_setup.py",
+      "console": "integratedTerminal",
+      "justMyCode": true
+    },
+    {
+      "name": "Python: Deploy Pipeline",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/deploy_pipeline.py",
+      "console": "integratedTerminal",
+      "args": [
+        "--workspace-id",
+        "${input:workspaceId}",
+        "--pipeline-path",
+        "${workspaceFolder}/fabric-pipeline/pipeline-definition.json"
+      ],
+      "justMyCode": true
+    },
+    {
+      "name": "Python: Upload to Blob",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/upload_to_blob.py",
+      "console": "integratedTerminal",
+      "args": [
+        "--storage-account",
+        "${input:storageAccountName}",
+        "--file",
+        "${workspaceFolder}/sample-data/conference_attendance.csv"
+      ],
+      "justMyCode": true
+    }
+  ],
+  "inputs": [
+    {
+      "id": "workspaceId",
+      "type": "promptString",
+      "description": "Enter your Fabric Workspace ID:"
+    },
+    {
+      "id": "storageAccountName",
+      "type": "promptString",
+      "description": "Enter your Azure Storage Account name:"
+    }
+  ]
+}

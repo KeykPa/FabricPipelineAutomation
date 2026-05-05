@@ -1,0 +1,21 @@
+RegistrationID,FirstName,LastName,Email,Company,JobTitle,RegistrationDate,SessionName,SessionDate,SessionTime,AttendanceStatus,CheckInTime,CheckOutTime,SessionRating,FeedbackComments
+REG001,Sarah,Johnson,sarah.johnson@techcorp.com,TechCorp,Data Engineer,2026-04-01,Azure Fabric Deep Dive,2026-05-15,09:00,Registered,,,,
+REG002,Michael,Chen,michael.chen@datasoft.com,DataSoft,Senior Analyst,2026-04-02,Azure Fabric Deep Dive,2026-05-15,09:00,Attended,09:05,10:45,5,Excellent session with great hands-on examples
+REG003,Emily,Rodriguez,emily.r@innovate.io,Innovate Inc,Solution Architect,2026-04-01,Real-time Analytics Workshop,2026-05-15,11:00,Attended,11:02,12:30,4,Very informative
+REG004,James,Williams,j.williams@enterprise.com,Enterprise Solutions,CTO,2026-04-03,Azure Fabric Deep Dive,2026-05-15,09:00,No-show,,,1,
+REG005,Lisa,Anderson,lisa.anderson@cloudnow.com,CloudNow,DevOps Lead,2026-04-02,Real-time Analytics Workshop,2026-05-15,11:00,Attended,11:00,12:28,5,Amazing workshop!
+REG006,Robert,Taylor,robert.t@dataventures.com,Data Ventures,Data Scientist,2026-04-04,Power BI Integration,2026-05-15,14:00,Registered,,,,
+REG007,Jennifer,Martinez,jen.martinez@analytics.io,Analytics Plus,BI Developer,2026-04-03,Power BI Integration,2026-05-15,14:00,Attended,14:10,15:40,4,Good practical examples
+REG008,David,Brown,d.brown@techsolutions.com,Tech Solutions,Engineering Manager,2026-04-05,Azure Fabric Deep Dive,2026-05-15,09:00,Cancelled,,,0,
+REG009,Amanda,Garcia,amanda.g@datainsights.com,Data Insights,Senior Consultant,2026-04-04,Real-time Analytics Workshop,2026-05-15,11:00,Attended,11:05,12:25,5,Best workshop I've attended this year
+REG010,Christopher,Lee,chris.lee@innovativedata.com,Innovative Data,Principal Engineer,2026-04-06,ETL Best Practices,2026-05-16,09:00,Registered,,,,
+REG011,Jessica,White,jessica.white@cloudtech.com,CloudTech,Data Analyst,2026-04-05,ETL Best Practices,2026-05-16,09:00,Attended,09:03,10:50,4,Well structured content
+REG012,Daniel,Harris,daniel.h@enterprise.com,Enterprise Solutions,Developer,2026-04-07,Power BI Integration,2026-05-15,14:00,Attended,14:05,15:45,3,Could use more advanced topics
+REG013,Michelle,Clark,michelle.clark@techcorp.com,TechCorp,Product Manager,2026-04-06,Security and Governance,2026-05-16,11:00,Registered,,,,
+REG014,Kevin,Lewis,kevin.l@datasoft.com,DataSoft,Solutions Architect,2026-04-08,Security and Governance,2026-05-16,11:00,Attended,11:08,12:35,5,Critical information well presented
+REG015,Laura,Walker,laura.walker@innovate.io,Innovate Inc,Tech Lead,2026-04-07,ETL Best Practices,2026-05-16,09:00,Attended,09:00,10:48,5,Excellent tips and tricks
+REG016,Brian,Hall,brian.hall@analytics.io,Analytics Plus,Database Admin,2026-04-09,Real-time Analytics Workshop,2026-05-15,11:00,No-show,,,2,
+REG017,Nicole,Allen,nicole.a@cloudnow.com,CloudNow,Senior Developer,2026-04-08,Azure Fabric Deep Dive,2026-05-15,09:00,Attended,09:12,10:50,4,Great overview of capabilities
+REG018,Ryan,Young,ryan.young@dataventures.com,Data Ventures,ML Engineer,2026-04-10,Machine Learning Integration,2026-05-16,14:00,Registered,,,,
+REG019,Stephanie,King,stephanie.k@techsolutions.com,Tech Solutions,Business Analyst,2026-04-09,Power BI Integration,2026-05-15,14:00,Attended,14:02,15:38,5,Loved the interactive demos
+REG020,Matthew,Wright,matt.wright@datainsights.com,Data Insights,Chief Data Officer,2026-04-11,Security and Governance,2026-05-16,11:00,Attended,11:00,12:40,5,Must-attend for any CDO
