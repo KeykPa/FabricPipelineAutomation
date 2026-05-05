@@ -70,7 +70,7 @@ FabricPipelineAutomation/
 ### 1. Clone Repository
 
 ```bash
-git clone https://github.com/alexeikh/FabricPipelineAutomation.git
+git clone https://github.com/KeykPa/FabricPipelineAutomation.git
 cd FabricPipelineAutomation
 ```
 
@@ -220,7 +220,7 @@ python scripts/cleanup_all.py --workspace-id YOUR_WORKSPACE_ID --delete-azure
 
 **Alexei Khalyako**
 - Email: alexeikh@hotmail.com
-- GitHub: [@alexeikh](https://github.com/alexeikh)
+- GitHub: [@KeykPa](https://github.com/KeykPa)
 
 ## 📝 License
 

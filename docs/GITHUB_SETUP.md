@@ -1,42 +1,15 @@
 # GitHub Repository Setup Guide
 
-## Step 1: Create GitHub Repository
+## ✅ Repository Already Created!
 
-1. **Go to GitHub**: https://github.com/new
+Your GitHub repository is live at:
+**https://github.com/KeykPa/FabricPipelineAutomation**
 
-2. **Fill in details**:
-   - **Repository name**: `FabricPipelineAutomation`
-   - **Description**: `Conference attendance pipeline using Microsoft Fabric, Azure, and Power BI`
-   - **Visibility**: ☑️ Public (or Private if you prefer)
-   - **DO NOT** initialize with README, .gitignore, or license (we already have these)
+All code has been pushed. You can verify by visiting the URL above.
 
-3. **Click**: "Create repository"
+---
 
-## Step 2: Push Local Code to GitHub
-
-After creating the repository, run these commands in your terminal:
-
-```powershell
-# The remote is already configured, just need to push
-git branch -M main
-git push -u origin main
-```
-
-If it asks for credentials, use:
-- **Username**: `alexeikh` (or your GitHub username)
-- **Password**: Your GitHub Personal Access Token (the one you provided)
-
-## Step 3: Verify Repository
-
-1. Open: https://github.com/alexeikh/FabricPipelineAutomation
-2. You should see all files including:
-   - README.md
-   - notebooks/load_conference_data.ipynb
-   - scripts/
-   - sample-data/
-   - powerbi-templates/
-
-## Step 4: Connect Fabric Workspace to GitHub
+## Step 1: Connect Fabric Workspace to GitHub
 
 ### Option A: Via Fabric Portal (Recommended)
 
@@ -55,7 +28,7 @@ If it asks for credentials, use:
    - Select **GitHub**
    - Authorize Fabric to access GitHub (if not already done)
    - Select:
-     - **Organization/Owner**: `alexeikh`
+     - **Organization/Owner**: `KeykPa`
      - **Repository**: `FabricPipelineAutomation`
      - **Branch**: `main`
      - **Folder**: `/` (root folder)
