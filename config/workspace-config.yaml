@@ -1,0 +1,135 @@
+# Fabric Workspace Git Integration Configuration
+# This file defines workspace-to-repository mappings for automated deployment
+
+# Azure Configuration
+azure:
+  resource_group: "westusattendiesdata"
+  location: "westus"
+  storage_account: "westusattendiesstore"
+  blob_container: "conference-data"
+
+# Fabric Configuration
+fabric:
+  capacity_name: "akhfabcapacity"
+  capacity_id: "AC94517C-39AF-425B-A2FE-1E7D72A8C06D"  # Optional: auto-discovered if not provided
+
+# Workspace Definitions
+# Each workspace can have its own Git repository and configuration
+workspaces:
+  # Primary workspace for conference attendance pipeline
+  - name: "West US Training"
+    description: "Conference attendance data pipeline with Lakehouse and Power BI"
+    enabled: true  # Set to false to skip this workspace during deployment
+    
+    # Git Integration
+    git:
+      provider: "GitHub"  # GitHub or AzureDevOps
+      organization: "KeykPa"
+      repository: "FabricPipelineAutomation"
+      branch: "main"
+      directory: "/"  # Root directory, or specify subfolder like "/workspaces/training"
+    
+    # Lakehouse Configuration
+    lakehouse:
+      name: "ConferenceDataLakehouse"
+      storage_shortcut:
+        name: "conference-data"
+        url: "https://westusattendiesstore.dfs.core.windows.net/"
+        container: "conference-data"
+        auth_type: "MicrosoftEntraID"
+    
+    # Artifacts to verify after Git sync
+    expected_artifacts:
+      - type: "Notebook"
+        name: "Load Conference Data"
+      - type: "Notebook"
+        name: "load_conference_data"
+    
+    # Power BI Report
+    powerbi:
+      create_report: true
+      report_name: "Conference Attendance Analysis"
+
+  # Example: Additional workspace for different region/environment (disabled by default)
+  - name: "East US Training"
+    description: "Conference attendance pipeline - East US region"
+    enabled: false  # Set to true to enable multi-workspace deployment
+    
+    git:
+      provider: "GitHub"
+      organization: "KeykPa"
+      repository: "FabricPipelineAutomation"
+      branch: "main"
+      directory: "/"
+    
+    lakehouse:
+      name: "ConferenceDataLakehouse"
+      storage_shortcut:
+        name: "conference-data"
+        url: "https://eastusattendiesstore.dfs.core.windows.net/"  # Different storage account
+        container: "conference-data"
+        auth_type: "MicrosoftEntraID"
+    
+    expected_artifacts:
+      - type: "Notebook"
+        name: "load_conference_data"
+    
+    powerbi:
+      create_report: true
+      report_name: "Conference Attendance Analysis"
+
+  # Example: Development workspace (disabled by default)
+  - name: "Dev Environment"
+    description: "Development and testing workspace"
+    enabled: false
+    
+    git:
+      provider: "GitHub"
+      organization: "KeykPa"
+      repository: "FabricPipelineAutomation"
+      branch: "dev"  # Different branch for development
+      directory: "/"
+    
+    lakehouse:
+      name: "DevLakehouse"
+      storage_shortcut:
+        name: "dev-data"
+        url: "https://westusattendiesstore.dfs.core.windows.net/"
+        container: "dev-data"
+        auth_type: "MicrosoftEntraID"
+    
+    expected_artifacts:
+      - type: "Notebook"
+        name: "load_conference_data"
+    
+    powerbi:
+      create_report: false  # Don't create Power BI report in dev
+
+# Deployment Options
+deployment:
+  # Create only workspaces that don't exist (true) or fail if workspace exists (false)
+  skip_existing_workspaces: true
+  
+  # Wait time after workspace creation before assigning capacity (seconds)
+  workspace_creation_wait: 5
+  
+  # Wait time after Git sync before verification (seconds)
+  git_sync_wait: 30
+  
+  # Automatically open browser for each workspace Git configuration
+  auto_open_browser: true
+  
+  # Create Lakehouse and shortcuts automatically (or manual instructions only)
+  auto_create_lakehouse: false  # Set to true when API supports it reliably
+  
+  # Run notebooks after deployment
+  auto_run_notebooks: false
+  
+  # Create Power BI reports automatically
+  auto_create_reports: false
+
+# Logging and Reporting
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR
+  file: "logs/deployment.log"
+  console_colors: true

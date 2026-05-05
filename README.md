@@ -45,9 +45,12 @@ FabricPipelineAutomation/
 │   └── conference_attendance.json    # Sample JSON data (5 records)
 ├── scripts/
 │   ├── setup_azure_resources.py      # Azure infrastructure deployment
-│   ├── fix_and_deploy.py             # Fabric workspace setup
+│   ├── deploy_workspaces.py          # 🆕 Multi-workspace Git deployment
+│   ├── fix_and_deploy.py             # Single workspace setup
 │   ├── create_powerbi_report.py      # Power BI report automation
 │   └── cleanup_all.py                # Resource cleanup
+├── config/
+│   └── workspace-config.yaml         # 🆕 Multi-workspace configuration
 ├── powerbi-templates/
 │   ├── attendance-report-template.json
 │   └── README.md
@@ -93,7 +96,37 @@ This creates:
 - Sample data upload
 - RBAC assignments
 
-### 4. Configure Fabric Workspace with GitHub Integration
+### 4. Deploy Fabric Workspace(s) with GitHub Integration
+
+**Option A: Multi-Workspace Deployment (Recommended for Enterprise)**
+
+Configure and deploy multiple workspaces from a single configuration file:
+
+```bash
+# 1. Edit configuration
+code config/workspace-config.yaml
+
+# 2. Review workspaces to deploy
+python scripts/deploy_workspaces.py --list
+
+# 3. Deploy all enabled workspaces
+python scripts/deploy_workspaces.py
+```
+
+This automated script:
+- ✅ Creates workspaces from configuration
+- ✅ Assigns to Fabric capacity
+- ✅ Opens browser for Git OAuth (per workspace)
+- ✅ Verifies notebook sync from GitHub
+- ✅ Guides through Lakehouse and shortcut creation
+
+**Perfect for**: Multi-region, Dev/Test/Prod, team workspaces
+
+📖 **Full Guide**: [Multi-Workspace Deployment Guide](docs/MULTI_WORKSPACE_GUIDE.md)
+
+**Option B: Manual Workspace Setup (Single Workspace)**
+
+For manual control or single workspace deployment:
 
 #### Step 1: Create Workspace
 1. Open [Microsoft Fabric](https://app.fabric.microsoft.com/)
