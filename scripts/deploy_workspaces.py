@@ -41,7 +41,6 @@ except ImportError:
 sys.path.insert(0, os.path.dirname(__file__))
 from fix_and_deploy import (
     get_fabric_token,
-    get_powerbi_token,
     create_workspace,
     get_capacity_id,
     assign_workspace_to_capacity
@@ -93,7 +92,7 @@ class WorkspaceDeployer:
     
     def check_workspace_exists(self, workspace_name):
         """Check if workspace already exists."""
-        token = get_powerbi_token()
+        token = get_fabric_token()
         if not token:
             return None
         
