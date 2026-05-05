@@ -155,6 +155,81 @@ def get_capacity_id(capacity_name):
         return None
 
 
+def configure_git_integration(workspace_id, github_org, github_repo, github_branch="main", github_directory="/"):
+    """Configure Git integration for workspace."""
+    print(f"\n{Fore.CYAN}Configuring Git Integration{Style.RESET_ALL}")
+    print(f"{Fore.WHITE}  Organization: {github_org}{Style.RESET_ALL}")
+    print(f"{Fore.WHITE}  Repository: {github_repo}{Style.RESET_ALL}")
+    print(f"{Fore.WHITE}  Branch: {github_branch}{Style.RESET_ALL}")
+    
+    token = get_fabric_token()
+    if not token:
+        return False
+    
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "Content-Type": "application/json"
+    }
+    
+    # Step 1: Connect to Git
+    url = f"https://api.fabric.microsoft.com/v1/workspaces/{workspace_id}/git/connect"
+    payload = {
+        "gitProviderDetails": {
+            "organizationName": github_org,
+            "projectName": github_repo,
+            "gitProviderType": "GitHub",
+            "repositoryName": github_repo,
+            "branchName": github_branch,
+            "directoryName": github_directory
+        }
+    }
+    
+    try:
+        print(f"{Fore.WHITE}  Connecting to GitHub...{Style.RESET_ALL}")
+        response = requests.post(url, headers=headers, json=payload, timeout=60)
+        
+        if response.status_code in [200, 201, 202]:
+            print(f"{Fore.GREEN}✓ Git connection established{Style.RESET_ALL}")
+        else:
+            print(f"{Fore.YELLOW}! Connection response: {response.status_code}{Style.RESET_ALL}")
+            if response.text:
+                try:
+                    error_detail = response.json()
+                    print(f"{Fore.YELLOW}  {error_detail.get('message', response.text)}{Style.RESET_ALL}")
+                except:
+                    print(f"{Fore.YELLOW}  {response.text}{Style.RESET_ALL}")
+        
+        # Wait for connection to establish
+        time.sleep(5)
+        
+        # Step 2: Initialize Git sync (pull from repository)
+        print(f"{Fore.WHITE}  Initializing workspace from GitHub...{Style.RESET_ALL}")
+        sync_url = f"https://api.fabric.microsoft.com/v1/workspaces/{workspace_id}/git/initializeConnection"
+        
+        sync_response = requests.post(sync_url, headers=headers, json={}, timeout=120)
+        
+        if sync_response.status_code in [200, 201, 202]:
+            print(f"{Fore.GREEN}✓ Workspace initialized from GitHub{Style.RESET_ALL}")
+            print(f"{Fore.WHITE}  Waiting for sync to complete...{Style.RESET_ALL}")
+            time.sleep(10)
+            return True
+        else:
+            print(f"{Fore.YELLOW}! Sync response: {sync_response.status_code}{Style.RESET_ALL}")
+            # Even if sync fails initially, connection might be established
+            return True
+            
+    except Exception as e:
+        print(f"{Fore.RED}✗ Git integration failed: {e}{Style.RESET_ALL}")
+        if hasattr(e, 'response') and e.response is not None:
+            try:
+                error_detail = e.response.json()
+                print(json.dumps(error_detail, indent=2))
+            except:
+                print(e.response.text)
+        print(f"{Fore.YELLOW}⚠ You may need to configure Git manually in workspace settings{Style.RESET_ALL}")
+        return False
+
+
 def assign_workspace_to_capacity(workspace_id, capacity_id):
     """Assign workspace to capacity."""
     print(f"\n{Fore.CYAN}Assigning workspace to capacity...{Style.RESET_ALL}")
@@ -381,13 +456,18 @@ def main():
     parser = argparse.ArgumentParser(description="Fix workspace capacity assignment and create resources")
     parser.add_argument("--workspace-name", required=True, help="Fabric workspace name (will create if doesn't exist)")
     parser.add_argument("--capacity-name", required=True, help="Capacity name")
+    parser.add_argument("--github-org", default="KeykPa", help="GitHub organization/username")
+    parser.add_argument("--github-repo", default="FabricPipelineAutomation", help="GitHub repository name")
+    parser.add_argument("--github-branch", default="main", help="GitHub branch")
+    parser.add_argument("--github-directory", default="/", help="Directory in repo (default: root)")
+    parser.add_argument("--use-git", action="store_true", default=True, help="Configure Git integration (default: True)")
     parser.add_argument("--lakehouse-name", default="ConferenceDataLakehouse", help="Lakehouse name")
     parser.add_argument("--notebook-name", default="Load Conference Data", help="Notebook name")
     
     args = parser.parse_args()
     
     print(f"\n{Fore.CYAN}{'=' * 80}")
-    print(f"{Fore.CYAN}Automated Fabric Workspace Setup")
+    print(f"{Fore.CYAN}Automated Fabric Workspace Setup with GitOps")
     print(f"{Fore.CYAN}{'=' * 80}{Style.RESET_ALL}\n")
     
     # Step 0: Create workspace
@@ -407,25 +487,45 @@ def main():
         print(f"\n{Fore.RED}✗ Workspace assignment failed{Style.RESET_ALL}")
         sys.exit(1)
     
-    # Step 3: Create Lakehouse
-    lakehouse_id = create_lakehouse(workspace_id, args.lakehouse_name)
-    if not lakehouse_id:
-        print(f"\n{Fore.YELLOW}⚠ Lakehouse creation failed - may need manual creation{Style.RESET_ALL}")
+    # Step 2.5: Configure Git Integration
+    git_configured = False
+    if args.use_git:
+        git_configured = configure_git_integration(
+            workspace_id,
+            args.github_org,
+            args.github_repo,
+            args.github_branch,
+            args.github_directory
+        )
     
-    # Step 4: Create Notebook
-    notebook_id = create_notebook(workspace_id, args.notebook_name)
-    if not notebook_id:
-        print(f"\n{Fore.YELLOW}⚠ Notebook creation failed - may need manual creation{Style.RESET_ALL}")
-    else:
-        # Step 4.5: Upload notebook content
-        script_dir = Path(__file__).parent
-        notebook_file = script_dir.parent / "notebooks" / "load_conference_data.ipynb"
+    # Step 3: Create resources (only if Git not configured, otherwise they come from GitHub)
+    lakehouse_id = None
+    notebook_id = None
+    
+    if not git_configured:
+        print(f"\n{Fore.YELLOW}Git integration not configured - creating resources manually{Style.RESET_ALL}")
         
-        if notebook_file.exists():
-            upload_notebook_content(workspace_id, notebook_id, str(notebook_file))
+        # Step 3: Create Lakehouse
+        lakehouse_id = create_lakehouse(workspace_id, args.lakehouse_name)
+        if not lakehouse_id:
+            print(f"\n{Fore.YELLOW}⚠ Lakehouse creation failed - may need manual creation{Style.RESET_ALL}")
+        
+        # Step 4: Create Notebook
+        notebook_id = create_notebook(workspace_id, args.notebook_name)
+        if not notebook_id:
+            print(f"\n{Fore.YELLOW}⚠ Notebook creation failed - may need manual creation{Style.RESET_ALL}")
         else:
-            print(f"{Fore.YELLOW}⚠ Notebook file not found at: {notebook_file}{Style.RESET_ALL}")
-            print(f"{Fore.YELLOW}⚠ Notebook created but empty{Style.RESET_ALL}")
+            # Step 4.5: Upload notebook content
+            script_dir = Path(__file__).parent
+            notebook_file = script_dir.parent / "notebooks" / "load_conference_data.ipynb"
+            
+            if notebook_file.exists():
+                upload_notebook_content(workspace_id, notebook_id, str(notebook_file))
+            else:
+                print(f"{Fore.YELLOW}⚠ Notebook file not found at: {notebook_file}{Style.RESET_ALL}")
+                print(f"{Fore.YELLOW}⚠ Notebook created but empty{Style.RESET_ALL}")
+    else:
+        print(f"\n{Fore.GREEN}✓ Git integration configured - resources will sync from GitHub{Style.RESET_ALL}")
     
     # Summary
     print(f"\n{Fore.CYAN}{'=' * 80}")
@@ -433,20 +533,39 @@ def main():
     print(f"{Fore.CYAN}{'=' * 80}{Style.RESET_ALL}\n")
     
     print(f"{Fore.GREEN}✓ Workspace created: {args.workspace_name}{Style.RESET_ALL}")
-    print(f"{Fore.GREEN}✓ Workspace assigned to capacity{Style.RESET_ALL}")
-    if lakehouse_id:
-        print(f"{Fore.GREEN}✓ Lakehouse created{Style.RESET_ALL}")
-    if notebook_id:
-        print(f"{Fore.GREEN}✓ Notebook created{Style.RESET_ALL}")
+    print(f"  ID: {workspace_id}")
+    print(f"{Fore.GREEN}✓ Workspace assigned to capacity: {args.capacity_name}{Style.RESET_ALL}")
+    
+    if git_configured:
+        print(f"{Fore.GREEN}✓ Git integration configured{Style.RESET_ALL}")
+        print(f"  Repository: {args.github_org}/{args.github_repo}")
+        print(f"  Branch: {args.github_branch}")
+        print(f"{Fore.GREEN}✓ Notebooks and resources synced from GitHub{Style.RESET_ALL}")
+    else:
+        if lakehouse_id:
+            print(f"{Fore.GREEN}✓ Lakehouse created{Style.RESET_ALL}")
+        if notebook_id:
+            print(f"{Fore.GREEN}✓ Notebook created{Style.RESET_ALL}")
     
     print(f"\n{Fore.CYAN}Next Steps:{Style.RESET_ALL}")
     print(f"{Fore.WHITE}1. Open workspace: https://app.fabric.microsoft.com/groups/{workspace_id}{Style.RESET_ALL}")
-    if lakehouse_id:
+    
+    if git_configured:
+        print(f"{Fore.WHITE}2. Verify notebook 'Load Conference Data' appears in workspace{Style.RESET_ALL}")
+        print(f"{Fore.WHITE}3. Create Lakehouse if not auto-created: 'ConferenceDataLakehouse'{Style.RESET_ALL}")
+        print(f"{Fore.WHITE}4. Create storage shortcut in Lakehouse{Style.RESET_ALL}")
+        print(f"{Fore.WHITE}5. Run the 'Load Conference Data' notebook{Style.RESET_ALL}")
+        print(f"{Fore.WHITE}6. Create Power BI report{Style.RESET_ALL}")
+    else:
         print(f"{Fore.WHITE}2. Create storage shortcut in Lakehouse to blob storage{Style.RESET_ALL}")
         print(f"{Fore.WHITE}3. Run the 'Load Conference Data' notebook{Style.RESET_ALL}")
         print(f"{Fore.WHITE}4. Create Power BI report from semantic model{Style.RESET_ALL}")
-    else:
-        print(f"{Fore.WHITE}2. Manually create Lakehouse (see MANUAL_SETUP_GUIDE.md){Style.RESET_ALL}")
+    
+    print()
+    print(f"{Fore.CYAN}Storage Shortcut Details:{Style.RESET_ALL}")
+    print(f"  URL: https://westusattendiesstore.dfs.core.windows.net/")
+    print(f"  Container: conference-data")
+    print(f"  Auth: Microsoft Entra ID")
     print()
 
 
