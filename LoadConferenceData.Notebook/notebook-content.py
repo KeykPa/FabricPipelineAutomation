@@ -8,9 +8,9 @@
 # META   },
 # META   "dependencies": {
 # META     "lakehouse": {
-# META       "default_lakehouse": "",
-# META       "default_lakehouse_name": "",
-# META       "default_lakehouse_workspace_id": ""
+# META       "default_lakehouse": "9baf1ed4-1e35-4972-8169-f1ebaa1d6caa",
+# META       "default_lakehouse_name": "ConferenceDataLakehouse",
+# META       "default_lakehouse_workspace_id": "7e602ac6-c1c2-4da4-a3d9-e4816740af62"
 # META     }
 # META   }
 # META }
@@ -19,36 +19,51 @@
 
 # # Conference Attendance Data Pipeline
 # 
-# This notebook loads conference attendance data from Azure Blob Storage and transforms it into Lakehouse Delta tables.
+# This notebook loads conference attendance data from OneLake Files and transforms it into Lakehouse Delta tables.
+# 
+# **✅ Data files are already uploaded to OneLake:**
+# - `Files/conference-data/conference_attendance.csv`
+# - `Files/conference-data/conference_attendance.json`
 # 
 # **What this pipeline does:**
-# - Reads CSV/JSON from Azure Blob Storage
-# - Transforms and cleans the data
-# - Writes to Delta tables in Lakehouse
-# - Generates data quality reports
-
-# CELL ********************
-
-# Configuration
-storage_account_name = "westusattendiesstore"
-container_name = "conference-data"
-csv_file = "conference_attendance.csv"
-json_file = "conference_attendance.json"
-
-print(f"✓ Configuration loaded")
-print(f"  Storage: {storage_account_name}")
-print(f"  Container: {container_name}")
+# - ✅ Reads CSV/JSON from OneLake Files
+# - ✅ Transforms and cleans the data  
+# - ✅ Writes to Delta tables in Lakehouse
+# - ✅ Generates data quality reports
 
 # MARKDOWN ********************
 
-# ## Load CSV Data from Blob Storage
+# ## Configuration
+
+# CELL ********************
+
+# File paths in OneLake (files already uploaded!)
+data_folder = "conference-data"
+csv_file = "conference_attendance.csv"
+json_file = "conference_attendance.json"
+
+# OneLake file paths
+csv_path = f"Files/{data_folder}/{csv_file}"
+json_path = f"Files/{data_folder}/{json_file}"
+
+print("=" * 60)
+print("✓ Configuration loaded")
+print("=" * 60)
+print(f"  Data folder: {data_folder}")
+print(f"  CSV Path: {csv_path}")
+print(f"  JSON Path: {json_path}")
+print("=" * 60)
+
+# MARKDOWN ********************
+
+# ## 1. Load CSV Data
 
 # CELL ********************
 
 from pyspark.sql.functions import *
 from pyspark.sql.types import *
 
-# Define schema
+# Define schema for CSV
 csv_schema = StructType([
     StructField("RegistrationID", StringType(), True),
     StructField("FirstName", StringType(), True),
@@ -67,18 +82,23 @@ csv_schema = StructType([
     StructField("FeedbackComments", StringType(), True)
 ])
 
-# Read CSV using abfss protocol
-csv_path = f"abfss://{container_name}@{storage_account_name}.dfs.core.windows.net/{csv_file}"
+# Read CSV from OneLake Files
 print(f"Reading from: {csv_path}")
 
-df_csv = spark.read \
-    .format("csv") \
-    .option("header", "true") \
-    .schema(csv_schema) \
-    .load(csv_path)
-
-print(f"✓ Loaded {df_csv.count()} records from CSV")
-df_csv.show(5, truncate=False)
+try:
+    df_csv = spark.read \
+        .format("csv") \
+        .option("header", "true") \
+        .option("inferSchema", "false") \
+        .schema(csv_schema) \
+        .load(csv_path)
+    
+    print(f"✓ Loaded {df_csv.count()} records from CSV")
+    df_csv.show(5)
+    
+except Exception as e:
+    print(f"✗ Error reading file: {e}")
+    raise
 
 # MARKDOWN ********************
 
