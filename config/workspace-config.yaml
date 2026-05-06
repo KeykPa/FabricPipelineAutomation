@@ -36,10 +36,11 @@ workspaces:
     organization: KeykPa
     provider: GitHub
     repository: FabricPipelineAutomation
-  id: 597d9fe7-788a-41c8-8035-35139691b776
-  sql_endpoint_id: 61606d9f-2297-4839-9b8f-a2e9df5ee2f6
+  id: 6709352c-2ea9-4468-af6b-5d604157a56c
+  sql_endpoint_id: 9caf557c-f545-43c3-97fa-9db7175eafe4
   lakehouse:
     name: ConferenceDataLakehouse
+    id: a93ce4f2-5393-4add-9d9c-21ed89e801c3
   name: West US Training
   powerbi:
     report_name: WestUSAttendanceReport
@@ -88,4 +89,3 @@ workspaces:
   powerbi:
     report_name: CentralUSAttendanceReport
     semantic_model: ConferenceAttendanceSemanticModel
-
