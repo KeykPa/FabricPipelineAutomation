@@ -1,6 +1,14 @@
+/// Parameter for SQL Server endpoint
+expression SqlServer = "XP4ZNS2QL4NEHEQ6EJQCCJO6NY-YYVGA7WCYGSE3I6Z4SAWOQFPMI.datawarehouse.fabric.microsoft.com" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 00000000-0000-0000-0000-000000000001
+
+/// Parameter for SQL Database (Lakehouse SQL Endpoint ID)
+expression SqlDatabase = "PLACEHOLDER-SQL-ENDPOINT-ID" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 00000000-0000-0000-0000-000000000002
+
 expression DatabaseQuery =
 		let
-		    database = Sql.Database("XP4ZNS2QL4NEHEQ6EJQCCJO6NY-YYVGA7WCYGSE3I6Z4SAWOQFPMI.datawarehouse.fabric.microsoft.com", "2b18478d-fd10-4b63-af4b-5ff1713f542a")
+		    database = Sql.Database(SqlServer, SqlDatabase)
 		in
 		    database
 	lineageTag: c6d00ea5-1e25-4df6-b247-8287a492cc06

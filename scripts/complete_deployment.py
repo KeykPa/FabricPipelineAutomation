@@ -18,9 +18,9 @@ logging.basicConfig(
 class DeploymentCompleter:
     def __init__(self):
         self.workspace_ids = {
-            'West US Training': 'a66b6ce9-4716-48ea-aa58-c93d11626d04',
-            'East US Training': 'c827aea1-0901-4be3-8b70-be074ac9bd6c',
-            'Central US Training': '28dfcaa8-978b-47c8-92c7-1917f5e6a214'
+            'West US Training': '3c687de4-6eb2-45ec-80ab-ff7dcb71bd0c',
+            'East US Training': 'a1f1aed8-2357-4a12-be22-3956e2104953',
+            'Central US Training': '91f25483-a8ca-4652-9e70-f060c0566b48'
         }
         self.data_files = {
             'West US Training': 'sample-data/west_us_attendance.csv',
