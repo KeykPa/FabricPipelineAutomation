@@ -160,22 +160,20 @@ class SemanticModelParameterUpdater:
 def main():
     """Update parameters for all workspaces"""
     
+    import yaml
+    
+    # Load workspace config
+    with open('config/workspace-config.yaml', 'r') as f:
+        config = yaml.safe_load(f)
+    
     workspaces = [
         {
-            'id': '3c687de4-6eb2-45ec-80ab-ff7dcb71bd0c',
-            'name': 'West US Training',
-            'sql_endpoint_id': '25c7be8f-cccb-43bb-b7b6-dce0f7bed5fe'
-        },
-        {
-            'id': 'a1f1aed8-2357-4a12-be22-3956e2104953',
-            'name': 'East US Training',
-            'sql_endpoint_id': '02740c90-5a07-4cc3-855b-4559eb435a20'
-        },
-        {
-            'id': '91f25483-a8ca-4652-9e70-f060c0566b48',
-            'name': 'Central US Training',
-            'sql_endpoint_id': 'a799af4d-47f4-4383-b443-f250695ba1a1'
+            'id': ws['id'],
+            'name': ws['name'],
+            'sql_endpoint_id': ws.get('sql_endpoint_id', 'UNKNOWN')
         }
+        for ws in config['workspaces'] 
+        if ws.get('enabled', True) and ws.get('sql_endpoint_id')
     ]
     
     logger.info(f"\n{'='*60}")
