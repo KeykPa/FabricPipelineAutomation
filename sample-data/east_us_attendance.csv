@@ -1,0 +1,26 @@
+EventDate,AttendeeID,Name,Company,Email,SessionID,SessionName,CheckInTime,Location,AttendanceStatus
+2024-05-08,E001,Anna Rivera,JPMorgan Chase,anna.rivera@jpmorgan.com,S201,Azure AI Fundamentals,09:00,New York NY,Present
+2024-05-08,E002,Brian Campbell,Goldman Sachs,brian.campbell@gs.com,S201,Azure AI Fundamentals,09:05,New York NY,Present
+2024-05-08,E003,Catherine Mitchell,Citibank,catherine.mitchell@citi.com,S202,Fabric Data Engineering,10:00,New York NY,Present
+2024-05-08,E004,Daniel Roberts,Morgan Stanley,daniel.roberts@morganstanley.com,S202,Fabric Data Engineering,10:05,New York NY,Present
+2024-05-08,E005,Emma Carter,Bank of America,emma.carter@bofa.com,S203,Power BI Advanced Analytics,11:00,Charlotte NC,Present
+2024-05-08,E006,Felix Phillips,Wells Fargo,felix.phillips@wellsfargo.com,S203,Power BI Advanced Analytics,11:10,Charlotte NC,Present
+2024-05-08,E007,Georgia Evans,TD Bank,georgia.evans@td.com,S204,Real-Time Analytics,13:00,Boston MA,Present
+2024-05-08,E008,Harrison Edwards,PNC Bank,harrison.edwards@pnc.com,S204,Real-Time Analytics,13:05,Pittsburgh PA,Present
+2024-05-08,E009,Isabella Collins,Capital One,isabella.collins@capitalone.com,S205,Machine Learning Ops,14:00,McLean VA,Present
+2024-05-08,E010,James Stewart,US Bank,james.stewart@usbank.com,S205,Machine Learning Ops,14:05,Minneapolis MN,Present
+2024-05-08,E011,Katherine Sanchez,American Express,katherine.sanchez@amex.com,S206,Azure DevOps Pipeline,15:00,New York NY,Present
+2024-05-08,E012,Lucas Morris,Discover,lucas.morris@discover.com,S206,Azure DevOps Pipeline,15:10,Chicago IL,Present
+2024-05-08,E013,Madison Rogers,Mastercard,madison.rogers@mastercard.com,S201,Azure AI Fundamentals,09:15,Purchase NY,Late
+2024-05-08,E014,Nathan Reed,Visa,nathan.reed@visa.com,S202,Fabric Data Engineering,10:15,New York NY,Late
+2024-05-08,E015,Olivia Cook,PayPal,olivia.cook@paypal.com,S203,Power BI Advanced Analytics,11:20,Charlotte NC,Late
+2024-05-08,E016,Peter Morgan,Stripe,peter.morgan@stripe.com,S204,Real-Time Analytics,13:15,New York NY,Late
+2024-05-08,E017,Quinn Bell,Square,quinn.bell@squareup.com,S205,Machine Learning Ops,14:15,New York NY,Late
+2024-05-08,E018,Rebecca Murphy,Fidelity,rebecca.murphy@fidelity.com,S206,Azure DevOps Pipeline,15:20,Boston MA,Late
+2024-05-08,E019,Samuel Bailey,Vanguard,samuel.bailey@vanguard.com,S201,Azure AI Fundamentals,09:30,Valley Forge PA,Late
+2024-05-08,E020,Taylor Rivera,BlackRock,taylor.rivera@blackrock.com,S202,Fabric Data Engineering,10:30,New York NY,Late
+2024-05-09,E021,Uma Cooper,State Street,uma.cooper@statestreet.com,S207,Azure Security Best Practices,09:00,Boston MA,Present
+2024-05-09,E022,Vincent Richardson,Northern Trust,vincent.richardson@ntrs.com,S207,Azure Security Best Practices,09:05,Chicago IL,Present
+2024-05-09,E023,Willow Cox,BNY Mellon,willow.cox@bnymellon.com,S208,Cosmos DB Deep Dive,10:00,New York NY,Present
+2024-05-09,E024,Xavier Howard,Charles Schwab,xavier.howard@schwab.com,S208,Cosmos DB Deep Dive,10:05,Westlake TX,Present
+2024-05-09,E025,Yasmine Ward,E*TRADE,yasmine.ward@etrade.com,S209,Kubernetes on Azure,11:00,New York NY,Present

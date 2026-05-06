@@ -1,0 +1,26 @@
+EventDate,AttendeeID,Name,Company,Email,SessionID,SessionName,CheckInTime,Location,AttendanceStatus
+2024-05-06,W001,Alice Johnson,Microsoft,alice.johnson@microsoft.com,S101,Azure AI Fundamentals,09:00,Seattle WA,Present
+2024-05-06,W002,Bob Smith,Amazon,bob.smith@amazon.com,S101,Azure AI Fundamentals,09:05,Portland OR,Present
+2024-05-06,W003,Carol White,Google,carol.white@google.com,S102,Fabric Data Engineering,10:00,San Francisco CA,Present
+2024-05-06,W004,David Lee,Meta,david.lee@meta.com,S102,Fabric Data Engineering,10:05,Menlo Park CA,Present
+2024-05-06,W005,Emily Brown,Oracle,emily.brown@oracle.com,S103,Power BI Advanced Analytics,11:00,Redwood City CA,Present
+2024-05-06,W006,Frank Miller,IBM,frank.miller@ibm.com,S103,Power BI Advanced Analytics,11:10,San Jose CA,Present
+2024-05-06,W007,Grace Davis,Salesforce,grace.davis@salesforce.com,S104,Real-Time Analytics,13:00,San Francisco CA,Present
+2024-05-06,W008,Henry Wilson,Adobe,henry.wilson@adobe.com,S104,Real-Time Analytics,13:05,San Jose CA,Present
+2024-05-06,W009,Iris Martinez,Intel,iris.martinez@intel.com,S105,Machine Learning Ops,14:00,Santa Clara CA,Present
+2024-05-06,W010,Jack Anderson,Apple,jack.anderson@apple.com,S105,Machine Learning Ops,14:05,Cupertino CA,Present
+2024-05-06,W011,Kate Thompson,Cisco,kate.thompson@cisco.com,S106,Azure DevOps Pipeline,15:00,San Jose CA,Present
+2024-05-06,W012,Liam Garcia,HP,liam.garcia@hp.com,S106,Azure DevOps Pipeline,15:10,Palo Alto CA,Present
+2024-05-06,W013,Mia Rodriguez,VMware,mia.rodriguez@vmware.com,S101,Azure AI Fundamentals,09:15,Palo Alto CA,Late
+2024-05-06,W014,Noah Martinez,SAP,noah.martinez@sap.com,S102,Fabric Data Engineering,10:15,San Francisco CA,Late
+2024-05-06,W015,Olivia Hernandez,ServiceNow,olivia.hernandez@servicenow.com,S103,Power BI Advanced Analytics,11:20,Santa Clara CA,Late
+2024-05-06,W016,Paul Lopez,Workday,paul.lopez@workday.com,S104,Real-Time Analytics,13:15,Pleasanton CA,Late
+2024-05-06,W017,Quinn Gonzalez,Zoom,quinn.gonzalez@zoom.com,S105,Machine Learning Ops,14:15,San Jose CA,Late
+2024-05-06,W018,Rachel Perez,Splunk,rachel.perez@splunk.com,S106,Azure DevOps Pipeline,15:20,San Francisco CA,Late
+2024-05-06,W019,Sam Turner,Tableau,sam.turner@tableau.com,S101,Azure AI Fundamentals,09:30,Seattle WA,Late
+2024-05-06,W020,Tina Hill,Autodesk,tina.hill@autodesk.com,S102,Fabric Data Engineering,10:30,San Rafael CA,Late
+2024-05-07,W021,Uma Scott,Intuit,uma.scott@intuit.com,S107,Azure Security Best Practices,09:00,Mountain View CA,Present
+2024-05-07,W022,Victor Green,Dropbox,victor.green@dropbox.com,S107,Azure Security Best Practices,09:05,San Francisco CA,Present
+2024-05-07,W023,Wendy Adams,Box,wendy.adams@box.com,S108,Cosmos DB Deep Dive,10:00,Redwood City CA,Present
+2024-05-07,W024,Xavier Baker,Lyft,xavier.baker@lyft.com,S108,Cosmos DB Deep Dive,10:05,San Francisco CA,Present
+2024-05-07,W025,Yolanda Nelson,Uber,yolanda.nelson@uber.com,S109,Kubernetes on Azure,11:00,San Francisco CA,Present

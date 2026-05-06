@@ -1,0 +1,26 @@
+EventDate,AttendeeID,Name,Company,Email,SessionID,SessionName,CheckInTime,Location,AttendanceStatus
+2024-05-10,C001,Aaron Torres,United Airlines,aaron.torres@united.com,S301,Azure AI Fundamentals,09:00,Chicago IL,Present
+2024-05-10,C002,Bella Peterson,American Airlines,bella.peterson@aa.com,S301,Azure AI Fundamentals,09:05,Dallas TX,Present
+2024-05-10,C003,Carlos Gray,Southwest Airlines,carlos.gray@southwest.com,S302,Fabric Data Engineering,10:00,Dallas TX,Present
+2024-05-10,C004,Diana Ramirez,Delta Air Lines,diana.ramirez@delta.com,S302,Fabric Data Engineering,10:05,Atlanta GA,Present
+2024-05-10,C005,Ethan James,FedEx,ethan.james@fedex.com,S303,Power BI Advanced Analytics,11:00,Memphis TN,Present
+2024-05-10,C006,Fiona Watson,UPS,fiona.watson@ups.com,S303,Power BI Advanced Analytics,11:10,Atlanta GA,Present
+2024-05-10,C007,George Brooks,Boeing,george.brooks@boeing.com,S304,Real-Time Analytics,13:00,Chicago IL,Present
+2024-05-10,C008,Hannah Kelly,Lockheed Martin,hannah.kelly@lmco.com,S304,Real-Time Analytics,13:05,Bethesda MD,Present
+2024-05-10,C009,Isaac Sanders,Northrop Grumman,isaac.sanders@ngc.com,S305,Machine Learning Ops,14:00,Falls Church VA,Present
+2024-05-10,C010,Julia Price,Raytheon,julia.price@rtx.com,S305,Machine Learning Ops,14:05,Waltham MA,Present
+2024-05-10,C011,Kevin Bennett,General Dynamics,kevin.bennett@gd.com,S306,Azure DevOps Pipeline,15:00,Reston VA,Present
+2024-05-10,C012,Luna Wood,Honeywell,luna.wood@honeywell.com,S306,Azure DevOps Pipeline,15:10,Charlotte NC,Present
+2024-05-10,C013,Marcus Barnes,Caterpillar,marcus.barnes@cat.com,S301,Azure AI Fundamentals,09:15,Peoria IL,Late
+2024-05-10,C014,Nina Ross,Deere & Company,nina.ross@deere.com,S302,Fabric Data Engineering,10:15,Moline IL,Late
+2024-05-10,C015,Oscar Henderson,3M,oscar.henderson@mmm.com,S303,Power BI Advanced Analytics,11:20,St Paul MN,Late
+2024-05-10,C016,Penelope Coleman,General Electric,penelope.coleman@ge.com,S304,Real-Time Analytics,13:15,Boston MA,Late
+2024-05-10,C017,Quincy Jenkins,Ford Motor,quincy.jenkins@ford.com,S305,Machine Learning Ops,14:15,Dearborn MI,Late
+2024-05-10,C018,Rose Perry,General Motors,rose.perry@gm.com,S306,Azure DevOps Pipeline,15:20,Detroit MI,Late
+2024-05-10,C019,Simon Powell,Tesla,simon.powell@tesla.com,S301,Azure AI Fundamentals,09:30,Austin TX,Late
+2024-05-10,C020,Tara Long,Rivian,tara.long@rivian.com,S302,Fabric Data Engineering,10:30,Irvine CA,Late
+2024-05-11,C021,Ulysses Patterson,Cummins,ulysses.patterson@cummins.com,S307,Azure Security Best Practices,09:00,Columbus IN,Present
+2024-05-11,C022,Violet Hughes,Paccar,violet.hughes@paccar.com,S307,Azure Security Best Practices,09:05,Bellevue WA,Present
+2024-05-11,C023,William Flores,Navistar,william.flores@navistar.com,S308,Cosmos DB Deep Dive,10:00,Lisle IL,Present
+2024-05-11,C024,Xena Washington,Oshkosh,xena.washington@oshkoshcorp.com,S308,Cosmos DB Deep Dive,10:05,Oshkosh WI,Present
+2024-05-11,C025,Yara Butler,Allison Transmission,yara.butler@allisontransmission.com,S309,Kubernetes on Azure,11:00,Indianapolis IN,Present

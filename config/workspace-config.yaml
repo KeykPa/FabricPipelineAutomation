@@ -16,10 +16,11 @@ fabric:
 # Workspace Definitions
 # Each workspace can have its own Git repository and configuration
 workspaces:
-  # Primary workspace for conference attendance pipeline
+  # West US Training workspace
   - name: "West US Training"
-    description: "Conference attendance data pipeline with Lakehouse and Power BI"
+    description: "Conference attendance data pipeline - West US region"
     enabled: true  # Set to false to skip this workspace during deployment
+    data_file: "west_us_attendance.csv"  # Specific CSV for this workspace
     
     # Git Integration
     git:
@@ -27,33 +28,31 @@ workspaces:
       organization: "KeykPa"
       repository: "FabricPipelineAutomation"
       branch: "main"
-      directory: "/"  # Root directory, or specify subfolder like "/workspaces/training"
+      directory: "/"  # Root directory
     
     # Lakehouse Configuration
     lakehouse:
       name: "ConferenceDataLakehouse"
-      storage_shortcut:
-        name: "conference-data"
-        url: "https://westusattendiesstore.dfs.core.windows.net/"
-        container: "conference-data"
-        auth_type: "MicrosoftEntraID"
     
     # Artifacts to verify after Git sync
     expected_artifacts:
       - type: "Notebook"
         name: "Load Conference Data"
-      - type: "Notebook"
-        name: "load_conference_data"
+      - type: "SemanticModel"
+        name: "ConferenceAttendanceSemanticModel"
+      - type: "Report"
+        name: "AttendanceReport"
     
     # Power BI Report
     powerbi:
-      create_report: true
-      report_name: "Conference Attendance Analysis"
+      semantic_model: "ConferenceAttendanceSemanticModel"
+      report_name: "WestUSAttendanceReport"
 
-  # Example: Additional workspace for different region/environment (disabled by default)
+  # East US Training workspace
   - name: "East US Training"
-    description: "Conference attendance pipeline - East US region"
-    enabled: false  # Set to true to enable multi-workspace deployment
+    description: "Conference attendance data pipeline - East US region"
+    enabled: true  # Enabled for multi-workspace deployment
+    data_file: "east_us_attendance.csv"  # Specific CSV for this workspace
     
     git:
       provider: "GitHub"
@@ -64,46 +63,46 @@ workspaces:
     
     lakehouse:
       name: "ConferenceDataLakehouse"
-      storage_shortcut:
-        name: "conference-data"
-        url: "https://eastusattendiesstore.dfs.core.windows.net/"  # Different storage account
-        container: "conference-data"
-        auth_type: "MicrosoftEntraID"
     
     expected_artifacts:
       - type: "Notebook"
-        name: "load_conference_data"
+        name: "Load Conference Data"
+      - type: "SemanticModel"
+        name: "ConferenceAttendanceSemanticModel"
+      - type: "Report"
+        name: "AttendanceReport"
     
     powerbi:
-      create_report: true
-      report_name: "Conference Attendance Analysis"
+      semantic_model: "ConferenceAttendanceSemanticModel"
+      report_name: "EastUSAttendanceReport"
 
-  # Example: Development workspace (disabled by default)
-  - name: "Dev Environment"
-    description: "Development and testing workspace"
-    enabled: false
+  # Central US Training workspace
+  - name: "Central US Training"
+    description: "Conference attendance data pipeline - Central US region"
+    enabled: true  # Enabled for multi-workspace deployment
+    data_file: "central_us_attendance.csv"  # Specific CSV for this workspace
     
     git:
       provider: "GitHub"
       organization: "KeykPa"
       repository: "FabricPipelineAutomation"
-      branch: "dev"  # Different branch for development
+      branch: "main"
       directory: "/"
     
     lakehouse:
-      name: "DevLakehouse"
-      storage_shortcut:
-        name: "dev-data"
-        url: "https://westusattendiesstore.dfs.core.windows.net/"
-        container: "dev-data"
-        auth_type: "MicrosoftEntraID"
+      name: "ConferenceDataLakehouse"
     
     expected_artifacts:
       - type: "Notebook"
-        name: "load_conference_data"
+        name: "Load Conference Data"
+      - type: "SemanticModel"
+        name: "ConferenceAttendanceSemanticModel"
+      - type: "Report"
+        name: "AttendanceReport"
     
     powerbi:
-      create_report: false  # Don't create Power BI report in dev
+      semantic_model: "ConferenceAttendanceSemanticModel"
+      report_name: "CentralUSAttendanceReport"
 
 # Deployment Options
 deployment:
@@ -114,13 +113,16 @@ deployment:
   workspace_creation_wait: 5
   
   # Wait time after Git sync before verification (seconds)
-  git_sync_wait: 30
+  git_sync_wait: 45
   
   # Automatically open browser for each workspace Git configuration
   auto_open_browser: true
   
-  # Create Lakehouse and shortcuts automatically (or manual instructions only)
-  auto_create_lakehouse: false  # Set to true when API supports it reliably
+  # Create Lakehouse automatically
+  auto_create_lakehouse: true
+  
+  # Upload individual CSV files to OneLake for each workspace
+  auto_upload_data: true
   
   # Run notebooks after deployment
   auto_run_notebooks: false
