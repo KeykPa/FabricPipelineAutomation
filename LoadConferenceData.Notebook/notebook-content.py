@@ -54,6 +54,13 @@ print(f"  CSV Path: {csv_path}")
 print(f"  JSON Path: {json_path}")
 print("=" * 60)
 
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
 # MARKDOWN ********************
 
 # ## 1. Load CSV Data
@@ -100,6 +107,13 @@ except Exception as e:
     print(f"✗ Error reading file: {e}")
     raise
 
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
 # MARKDOWN ********************
 
 # ## Transform and Clean Data
@@ -118,6 +132,13 @@ print(f"✓ Cleaned data: {df_transformed.count()} valid records")
 print("\nData Preview:")
 df_transformed.select("RegistrationID", "FirstName", "LastName", "Company", "SessionName", "AttendanceStatus").show(10)
 
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
 # MARKDOWN ********************
 
 # ## Write to Lakehouse Delta Table
@@ -135,6 +156,13 @@ df_transformed.write \
 
 print(f"✓ Data written to table: {table_name}")
 print(f"✓ Table location: Tables/{table_name}")
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
 
 # MARKDOWN ********************
 
@@ -174,6 +202,13 @@ df_transformed.filter(col("SessionRating").isNotNull()) \
     ) \
     .orderBy(desc("AvgRating")).show()
 
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
 # MARKDOWN ********************
 
 # ## Verify Table in Lakehouse
@@ -195,3 +230,10 @@ print("You can now:")
 print("  • Query with SQL")
 print("  • Create Power BI reports")
 print("  • Use in other notebooks")
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
