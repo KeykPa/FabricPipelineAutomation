@@ -14,40 +14,42 @@
 
 ### Fabric Workspace (Created)
 - ✅ **Workspace Name**: West US Training
-- ✅ **Workspace ID**: 00bcfcd2-97d8-48b0-8ae4-67e7395ac373
-- ✅ **URL**: https://app.fabric.microsoft.com/groups/00bcfcd2-97d8-48b0-8ae4-67e7395ac373
+- ✅ **Workspace ID**: 7e602ac6-c1c2-4da4-a3d9-e4816740af62
+- ✅ **URL**: https://app.fabric.microsoft.com/groups/7e602ac6-c1c2-4da4-a3d9-e4816740af62
 - ✅ **Connected to Capacity**: akhfabcapacity
+- ✅ **Lakehouse**: ConferenceDataLakehouse (9baf1ed4-1e35-4972-8169-f1ebaa1d6caa)
+- ✅ **Notebook**: Load Conference Data (c6ca0b35-a76a-4221-b3e3-2df6231eca00)
+- ⚠️  **Shortcut**: Needs to be created manually (see below)
 
 ---
 
 ## ⚠️ What Needs Manual Setup
 
-### Data Engineering Workload Not Enabled
+### Storage Shortcut (5 minutes)
 
-**Issue**: The Fabric API returns `"FeatureNotAvailable"` when trying to create Lakehouse/Notebook
+**Current State**: Lakehouse and Notebook are created, but shortcut doesn't exist yet
 
-**Root Cause**: The Data Engineering workload is not enabled on your Fabric capacity
+**Why Manual**: Fabric API requires cloud connection creation with OAuth delegation
 
-**Why It Cannot Be Automated**: 
-- Fabric API does not support enabling workloads programmatically
-- This is an admin-level capacity configuration
-- Must be done through the Fabric Admin Portal
+**Next Step**: Create the shortcut following SHORTCUT_SETUP_GUIDE.md
 
 ---
 
-## 📋 Next Steps - Choose One Option
+## 📋 Next Step: Create Storage Shortcut
 
-### Option 1: Enable API Automation (Recommended)
+**Time**: ~3 minutes
 
-**Time**: ~10 minutes (5 min setup + 2 min wait + automated deployment)
+**Follow the guide**: [SHORTCUT_SETUP_GUIDE.md](SHORTCUT_SETUP_GUIDE.md)
 
-1. **Enable Data Engineering Workload**:
-   ```bash
-   python scripts/enable_data_engineering.py
-   ```
-   Follow the printed instructions to enable via Admin Portal
-
-2. **Wait 2-3 minutes** for settings to propagate
+**Quick Summary**:
+1. Open lakehouse: https://app.fabric.microsoft.com/groups/7e602ac6-c1c2-4da4-a3d9-e4816740af62
+2. Go to ConferenceDataLakehouse → Files → New shortcut
+3. Select Azure Data Lake Storage Gen2  
+4. URL: `https://westusattendiesstore.dfs.core.windows.net/`
+5. Auth: Organizational account (your Entra ID)
+6. Container: `conference-data`
+7. Create shortcut
+8. Run the notebook!
 
 3. **Run automated deployment**:
    ```bash

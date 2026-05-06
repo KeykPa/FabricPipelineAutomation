@@ -4,6 +4,16 @@
 # MAGIC 
 # MAGIC This notebook loads conference attendance data from Azure Blob Storage
 # MAGIC and transforms it into Lakehouse Delta tables.
+# MAGIC 
+# MAGIC **Prerequisites:**
+# MAGIC 1. Create a storage shortcut in Lakehouse:
+# MAGIC    - Go to Files → New shortcut → Azure Data Lake Storage Gen2
+# MAGIC    - URL: `https://westusattendiesstore.dfs.core.windows.net/`
+# MAGIC    - Authentication: Microsoft Entra ID (your account)
+# MAGIC    - Container: `conference-data`
+# MAGIC    - Name: `conference-data`
+# MAGIC 
+# MAGIC This uses Entra ID authentication - no storage keys! ✅
 
 # COMMAND ----------
 
@@ -12,14 +22,19 @@
 
 # COMMAND ----------
 
-# Storage account configuration
-storage_account_name = "westusattendiesstore"
-container_name = "conference-data"
-lakehouse_name = "ConferenceDataLakehouse"
-
-# File paths
+# Storage shortcut configuration (no keys needed!)
+shortcut_name = "conference-data"
 csv_file = "conference_attendance.csv"
 json_file = "conference_attendance.json"
+
+# Paths use lakehouse shortcut - authentication via Entra ID
+csv_path = f"Files/{shortcut_name}/{csv_file}"
+json_path = f"Files/{shortcut_name}/{json_file}"
+
+print("✓ Configuration loaded")
+print(f"  Shortcut: {shortcut_name}")
+print(f"  CSV Path: {csv_path}")
+print(f"  Authentication: Entra ID (via shortcut) ✅")
 
 # COMMAND ----------
 
@@ -50,20 +65,26 @@ csv_schema = StructType([
     StructField("FeedbackComments", StringType(), True)
 ])
 
-# Read CSV from blob storage using abfss protocol
-csv_path = f"abfss://{container_name}@{storage_account_name}.dfs.core.windows.net/{csv_file}"
+# Read CSV from lakehouse shortcut (uses Entra ID automatically)
+print(f"Reading from: {csv_path}")
+print(f"Using Entra ID authentication via shortcut...")
 
-print(f"Reading CSV from: {csv_path}")
-
-df_csv = spark.read \
-    .format("csv") \
-    .option("header", "true") \
-    .option("inferSchema", "false") \
-    .schema(csv_schema) \
-    .load(csv_path)
-
-print(f"✓ Loaded {df_csv.count()} records from CSV")
-df_csv.show(5)
+try:
+    df_csv = spark.read \
+        .format("csv") \
+        .option("header", "true") \
+        .option("inferSchema", "false") \
+        .schema(csv_schema) \
+        .load(csv_path)
+    
+    print(f"✓ Loaded {df_csv.count()} records from CSV")
+    df_csv.show(5)
+    
+except Exception as e:
+    print(f"✗ Error reading file: {e}")
+    print(f"\n⚠️ Make sure you created the storage shortcut first!")
+    print(f"   Go to Files → New shortcut → Azure Data Lake Storage Gen2")
+    raise
 
 # COMMAND ----------
 
@@ -110,9 +131,7 @@ print(f"✓ Data written to table: {table_name}")
 
 # COMMAND ----------
 
-# Read JSON from blob storage
-json_path = f"abfss://{container_name}@{storage_account_name}.dfs.core.windows.net/{json_file}"
-
+# Read JSON from lakehouse shortcut
 print(f"Reading JSON from: {json_path}")
 
 try:
