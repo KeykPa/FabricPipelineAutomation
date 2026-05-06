@@ -10,25 +10,30 @@ The semantic models and reports synced from Git have **hardcoded connections** t
 
 ## 📊 Workspace SQL Endpoint IDs
 
+**Last Updated: 2026-05-06 (Fresh Deployment)**
+
 After deployment, here are the SQL Endpoint IDs for each workspace:
 
 ### West US Training
-- **Workspace ID**: `fc615d62-70ff-4e43-9974-643027144ee2`
-- **Lakehouse ID**: `a0e3109e-3197-4bf0-a30f-2611e777ef4b`
-- **SQL Endpoint ID**: `26edfea8-3e0d-4eab-a1cb-e1b54d9f94ee`
+- **Workspace ID**: `a66b6ce9-4716-48ea-aa58-c93d11626d04`
+- **Lakehouse ID**: `095eca46-ba23-4e49-b344-c718f55e8e59`
+- **SQL Endpoint ID**: `e6d537ff-f837-41b5-b05b-2d9aa5ce861b`
 - **Data File**: `west_us_attendance.csv`
+- **Records**: 25 (West Coast tech companies)
 
 ### East US Training
-- **Workspace ID**: `50990989-81b4-4128-95d0-2eee8eff809a`
-- **Lakehouse ID**: `f8f18265-eeb9-4be4-8ab3-ec55b3896504`
-- **SQL Endpoint ID**: `e04e3078-7592-457f-913c-ef742f862576`
+- **Workspace ID**: `c827aea1-0901-4be3-8b70-be074ac9bd6c`
+- **Lakehouse ID**: `6c2b58fd-c022-4238-ac9b-1a144d7d8c26`
+- **SQL Endpoint ID**: `e929c471-9c9f-452c-8713-874637d29cc2`
 - **Data File**: `east_us_attendance.csv`
+- **Records**: 25 (East Coast financial firms)
 
 ### Central US Training
-- **Workspace ID**: `d2e05386-ef7d-40c2-a06e-bc89eadeb810`
-- **Lakehouse ID**: `1db21ffc-fc6c-4c2d-af30-5d01ad814a00`
-- **SQL Endpoint ID**: `b7cf2b1b-685f-4e37-9afb-abec1aef4d9a`
+- **Workspace ID**: `28dfcaa8-978b-47c8-92c7-1917f5e6a214`
+- **Lakehouse ID**: `12711c88-4f94-422d-a5ff-9339cece16c6`
+- **SQL Endpoint ID**: `e3b5a3f7-5fb8-4ee7-b28d-637dbe68b435`
 - **Data File**: `central_us_attendance.csv`
+- **Records**: 25 (Central US industrial companies)
 
 ---
 
