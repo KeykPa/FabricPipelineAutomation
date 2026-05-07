@@ -1,91 +1,23 @@
-azure:
-  blob_container: conference-data
-  location: westus
-  resource_group: westusattendiesdata
-  storage_account: westusattendiesstore
-deployment:
-  auto_create_lakehouse: true
-  auto_create_reports: false
-  auto_open_browser: true
-  auto_run_notebooks: false
-  auto_upload_data: true
-  git_sync_wait: 45
-  skip_existing_workspaces: true
-  workspace_creation_wait: 5
 fabric:
   capacity_id: AC94517C-39AF-425B-A2FE-1E7D72A8C06D
   capacity_name: akhfabcapacity
-logging:
-  console_colors: true
-  file: logs/deployment.log
-  level: INFO
+artifacts:
+  lakehouse_name: ConferenceDataLakehouse
+  notebook_name: Load Conference Data
+  pipeline_name: ConferenceAttendanceDataPipeline
+  semantic_model_name: ConferenceAttendanceSemanticModel
+  report_name: AttendanceReport
+  table_name: conference_attendance
 workspaces:
-- data_file: west_us_attendance.csv
-  description: Conference attendance data pipeline - West US region
-  enabled: true
-  expected_artifacts:
-  - name: Load Conference Data
-    type: Notebook
-  - name: ConferenceAttendanceSemanticModel
-    type: SemanticModel
-  - name: AttendanceReport
-    type: Report
-  git:
-    branch: main
-    directory: /
-    organization: KeykPa
-    provider: GitHub
-    repository: FabricPipelineAutomation
+- name: GIZ West US Training
   id: 6709352c-2ea9-4468-af6b-5d604157a56c
-  sql_endpoint_id: 9caf557c-f545-43c3-97fa-9db7175eafe4
-  lakehouse:
-    name: ConferenceDataLakehouse
-    id: a93ce4f2-5393-4add-9d9c-21ed89e801c3
-  name: West US Training
-  powerbi:
-    report_name: WestUSAttendanceReport
-    semantic_model: ConferenceAttendanceSemanticModel
-- data_file: east_us_attendance.csv
-  description: Conference attendance data pipeline - East US region
-  enabled: false
-  expected_artifacts:
-  - name: Load Conference Data
-    type: Notebook
-  - name: ConferenceAttendanceSemanticModel
-    type: SemanticModel
-  - name: AttendanceReport
-    type: Report
-  git:
-    branch: main
-    directory: /
-    organization: KeykPa
-    provider: GitHub
-    repository: FabricPipelineAutomation
-  lakehouse:
-    name: ConferenceDataLakehouse
-  name: East US Training
-  powerbi:
-    report_name: EastUSAttendanceReport
-    semantic_model: ConferenceAttendanceSemanticModel
-- data_file: central_us_attendance.csv
-  description: Conference attendance data pipeline - Central US region
-  enabled: false
-  expected_artifacts:
-  - name: Load Conference Data
-    type: Notebook
-  - name: ConferenceAttendanceSemanticModel
-    type: SemanticModel
-  - name: AttendanceReport
-    type: Report
-  git:
-    branch: main
-    directory: /
-    organization: KeykPa
-    provider: GitHub
-    repository: FabricPipelineAutomation
-  lakehouse:
-    name: ConferenceDataLakehouse
-  name: Central US Training
-  powerbi:
-    report_name: CentralUSAttendanceReport
-    semantic_model: ConferenceAttendanceSemanticModel
+  region: West US
+  enabled: true
+- name: GIZ East US Training
+  id: a1f1aed8-2357-4a12-be22-3956e2104953
+  region: East US
+  enabled: true
+- name: GIZ Central US Training
+  id: 91f25483-a8ca-4652-9e70-f060c0566b48
+  region: Central US
+  enabled: true

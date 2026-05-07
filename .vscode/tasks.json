@@ -2,213 +2,37 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Deploy Everything (Complete Automated Setup)",
+      "label": "Deploy All Workspaces",
       "type": "shell",
       "command": "python",
-      "args": [
-        "scripts/deploy_all.py",
-        "--resource-group",
-        "${input:resourceGroupName}",
-        "--location",
-        "${input:azureLocation}",
-        "--storage-account",
-        "${input:storageAccountName}",
-        "--workspace-name",
-        "${input:workspaceName}",
-        "--use-existing-capacity",
-        "--capacity-name",
-        "${input:capacityName}"
-      ],
-      "problemMatcher": [],
-      "presentation": {
-        "reveal": "always",
-        "panel": "new"
-      },
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      }
+      "args": ["scripts/deploy_workspace.py"],
+      "group": { "kind": "build", "isDefault": true },
+      "problemMatcher": []
     },
     {
-      "label": "Interactive Setup - Complete Project Setup",
+      "label": "Deploy Single Workspace",
       "type": "shell",
       "command": "python",
-      "args": [
-        "scripts/interactive_setup.py"
-      ],
-      "problemMatcher": [],
-      "presentation": {
-        "reveal": "always",
-        "panel": "new"
-      }
+      "args": ["scripts/deploy_workspace.py", "--workspace-id", "${input:workspaceId}"],
+      "problemMatcher": []
     },
     {
-      "label": "Deploy Fabric Workspace (Lakehouse + Notebook)",
+      "label": "Rename Workspaces (apply prefix)",
       "type": "shell",
       "command": "python",
-      "args": [
-        "scripts/deploy_fabric_workspace.py",
-        "--workspace-id",
-        "${input:workspaceId}",
-        "--storage-account",
-        "${input:storageAccountName}",
-        "--lakehouse-name",
-        "ConferenceDataLakehouse"
-      ],
-      "problemMatcher": [],
-      "presentation": {
-        "reveal": "always",
-        "panel": "new"
-      }
-    },
-    {
-      "label": "Setup Azure Resources (Manual)",
-      "type": "shell",
-      "command": "python",
-      "args": [
-        "scripts/setup_azure_resources.py",
-        "--resource-group",
-        "${input:resourceGroupName}",
-        "--location",
-        "${input:azureLocation}",
-        "--storage-account",
-        "${input:storageAccountName}",
-        "--workspace-name",
-        "${input:workspaceName}",
-        "--capacity-name",
-        "${input:capacityName}",
-        "--capacity-sku",
-        "${input:capacitySku}"
-      ],
-      "problemMatcher": [],
-      "presentation": {
-        "reveal": "always",
-        "panel": "new"
-      }
-    },
-    {
-      "label": "Upload Sample Data to Blob",
-      "type": "shell",
-      "command": "python",
-      "args": [
-        "scripts/upload_to_blob.py",
-        "--storage-account",
-        "${input:storageAccountName}",
-        "--file",
-        "sample-data/conference_attendance.csv"
-      ],
-      "problemMatcher": [],
-      "presentation": {
-        "reveal": "always",
-        "panel": "new"
-      }
-    },
-    {
-      "label": "Deploy Fabric Pipeline",
-      "type": "shell",
-      "command": "python",
-      "args": [
-        "scripts/deploy_pipeline.py",
-        "--workspace-id",
-        "${input:workspaceId}",
-        "--pipeline-path",
-        "fabric-pipeline/pipeline-definition.json"
-      ],
-      "problemMatcher": [],
-      "presentation": {
-        "reveal": "always",
-        "panel": "new"
-      }
-    },
-    {
-      "label": "Validate JSON Files",
-      "type": "shell",
-      "command": "python",
-      "args": [
-        "-c",
-        "import json; import pathlib; [print(f'✓ {f.name} valid') or json.load(f.open()) for f in pathlib.Path('fabric-pipeline').glob('*.json')]"
-      ],
-      "problemMatcher": [],
-      "presentation": {
-        "reveal": "always",
-        "panel": "shared"
-      }
+      "args": ["scripts/rename_workspaces.py", "--prefix", "${input:prefix}"],
+      "problemMatcher": []
     },
     {
       "label": "Install Python Dependencies",
       "type": "shell",
       "command": "pip",
-      "args": [
-        "install",
-        "-r",
-        "requirements.txt"
-      ],
-      "problemMatcher": [],
-      "presentation": {
-        "reveal": "always",
-        "panel": "shared"
-      }
+      "args": ["install", "-r", "requirements.txt"],
+      "problemMatcher": []
     }
   ],
   "inputs": [
-    {
-      "id": "storageAccountName",
-      "type": "promptString",
-      "description": "Enter your Azure Storage Account name:"
-    },
-    {
-      "id": "workspaceId",
-      "type": "promptString",
-      "description": "Enter your Fabric Workspace ID:"
-    },
-    {
-      "id": "workspaceName",
-      "type": "promptString",
-      "description": "Enter your Fabric Workspace name:",
-      "default": "ConferencePipeline"
-    },
-    {
-      "id": "resourceGroupName",
-      "type": "promptString",
-      "description": "Enter your Azure Resource Group name:",
-      "default": "rg-fabric-pipeline"
-    },
-    {
-      "id": "azureLocation",
-      "type": "pickString",
-      "description": "Select Azure region for resource group and capacity:",
-      "options": [
-        "eastus",
-        "eastus2",
-        "westus",
-        "westus2",
-        "centralus",
-        "northeurope",
-        "westeurope",
-        "southeastasia",
-        "australiaeast"
-      ],
-      "default": "eastus"
-    },
-    {
-      "id": "capacityName",
-      "type": "promptString",
-      "description": "Enter Fabric Capacity name:",
-      "default": "fabric-capacity-01"
-    },
-    {
-      "id": "capacitySku",
-      "type": "pickString",
-      "description": "Select Fabric Capacity SKU:",
-      "options": [
-        "F2",
-        "F4",
-        "F8",
-        "F16",
-        "F32",
-        "F64"
-      ],
-      "default": "F2"
-    }
+    { "id": "workspaceId", "type": "promptString", "description": "Fabric workspace GUID" },
+    { "id": "prefix", "type": "promptString", "description": "Workspace name prefix (e.g. GIZ)" }
   ]
 }
